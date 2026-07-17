@@ -1,0 +1,79 @@
+/* ============================================================
+   Дизайн-токены · «Разминка» · Премиум-минимал
+   Единый источник значений. Правим здесь — меняется везде.
+   ============================================================ */
+
+:root {
+  /* — Цвет — */
+  --paper:          #F6F4EF;  /* фон страницы */
+  --paper-2:        #FBFAF7;  /* чередующийся фон секций */
+  --surface:        #FFFFFF;  /* карточки */
+  --ink:            #191818;  /* основной текст/заголовки */
+  --ink-70:         #4B4A48;  /* вторичный текст */
+  --ink-50:         #7A7873;  /* мета, подписи */
+  --line:           #E7E3DA;  /* границы, разделители */
+  --accent:         #C1543B;  /* фон кнопок, крупные цифры */
+  --accent-strong:  #A5442E;  /* ховер + акцентный текст (AA) */
+  --accent-tint:    #F3E5DF;  /* мягкая подложка акцента */
+  --ink-inv:        #F6F4EF;  /* текст на тёмном */
+  --footer-bg:      #191818;  /* фон подвала */
+
+  /* фокус-кольцо */
+  --ring:           0 0 0 3px rgba(193, 84, 59, .35);
+
+  /* — Типографика — */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans:    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --fs-display: clamp(2.5rem, 6.5vw, 4.75rem);
+  --fs-h2:      clamp(1.75rem, 4vw, 2.75rem);
+  --fs-h3:      clamp(1.25rem, 2.4vw, 1.6rem);
+  --fs-lead:    clamp(1.125rem, 2vw, 1.375rem);
+  --fs-body:    1.0625rem;   /* 17px */
+  --fs-small:   0.875rem;
+  --fs-eyebrow: 0.8125rem;
+  --fs-metric:  clamp(2.5rem, 6vw, 4rem);
+
+  --lh-tight: 1.05;
+  --lh-head:  1.15;
+  --lh-body:  1.6;
+
+  --measure: 34rem;  /* ширина текстовой колонки (~68 символов) */
+
+  /* — Пространство (шкала 8px) — */
+  --space-1: 0.25rem;  /* 4  */
+  --space-2: 0.5rem;   /* 8  */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.5rem;   /* 24 */
+  --space-6: 2rem;     /* 32 */
+  --space-7: 3rem;     /* 48 */
+  --space-8: 4rem;     /* 64 */
+  --space-9: 6rem;     /* 96 */
+  --space-10: 8rem;    /* 128 */
+
+  --section-y: clamp(4rem, 9vw, 7.5rem);
+
+  /* — Контейнеры — */
+  --container: 1120px;
+  --container-narrow: 720px;
+  --gutter: clamp(1.25rem, 5vw, 3rem);
+
+  /* — Форма — */
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* — Тени (мягкие, редко) — */
+  --shadow-sm: 0 1px 2px rgba(25, 24, 24, .04);
+  --shadow-md: 0 8px 30px rgba(25, 24, 24, .06);
+
+  /* — Движение — */
+  --ease: cubic-bezier(.2, .6, .2, 1);
+  --dur: 200ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur: 0ms; }
+}

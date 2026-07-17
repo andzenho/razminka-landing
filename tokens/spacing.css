@@ -1,0 +1,26 @@
+/* ── Spacing & layout ────────────────────────────────────
+   Шкала не привязана к жёсткой 8px-сетке — живое важнее идеального. */
+:root {
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+  --sp-10: 128px;
+
+  /* Section rhythm (mobile-first) */
+  --section-y: clamp(56px, 12vw, 128px); /* @kind spacing */
+  --gutter: clamp(20px, 5vw, 40px); /* @kind spacing */
+  --content-max: 1120px;
+  --measure: 62ch;          /* оптимальная ширина текста */
+
+  /* Radii — маленькие для обычных карточек; видоискатели ОСТРЫЕ (0). */
+  --r-card: 6px;
+  --r-pill: 999px;
+  --r-input: 4px;
+  --r-none: 0px;            /* рамки-видоискатель, скриншоты */
+}
