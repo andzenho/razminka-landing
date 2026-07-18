@@ -1,6 +1,6 @@
 /* global React, ReactDOM */
 (function(){
-const useState = React.useState, useEffect = React.useEffect;
+const useState = React.useState, useEffect = React.useEffect, useRef = React.useRef;
 
 /* ── Форма захвата GetCourse ──────────────────────────────────────────────
    Показываем родной виджет ГК в нашем попапе. Форму строим свежей при каждом
@@ -23,9 +23,23 @@ function LeadModal() {
   const [openId, setOpenId] = useState(0);   // растёт при каждом открытии → свежий iframe
   const [height, setHeight] = useState(460);
   const [loaded, setLoaded] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const scrollerRef = useRef(null);
+
+  function checkHint() {
+    const el = scrollerRef.current;
+    if (!el) { setShowHint(false); return; }
+    setShowHint(el.scrollHeight - el.scrollTop - el.clientHeight > 16);
+  }
 
   useEffect(() => {
-    window.__openLeadModal = () => { setHeight(460); setLoaded(false); setOpenId(id => id + 1); setOpen(true); };
+    if (!open) return;
+    const t = setTimeout(checkHint, 60);
+    return () => clearTimeout(t);
+  }, [open, height, loaded]);
+
+  useEffect(() => {
+    window.__openLeadModal = () => { setHeight(460); setLoaded(false); setShowHint(false); setOpenId(id => id + 1); setOpen(true); };
     function onMsg(e) {
       const d = e.data;
       if (d && d.uniqName === GK_UNIQ && d.height) {
@@ -53,32 +67,45 @@ function LeadModal() {
     },
     React.createElement("div", {
         onClick: e => e.stopPropagation(),
-        style: { position: "relative", width: "100%", maxWidth: "480px", maxHeight: "92vh", overflowY: "auto", background: "var(--paper)", borderRadius: "var(--r-card)", padding: "clamp(22px, 5vw, 32px) clamp(16px, 4vw, 20px) 16px", boxShadow: "var(--shadow-lift)" }
+        style: { position: "relative", display: "flex", flexDirection: "column", width: "100%", maxWidth: "480px", maxHeight: "92vh", overflow: "hidden", background: "var(--paper)", borderRadius: "var(--r-card)", padding: "clamp(22px, 5vw, 32px) clamp(16px, 4vw, 20px) 0", boxShadow: "var(--shadow-lift)" }
       },
       React.createElement("button", {
         type: "button", onClick: () => setOpen(false), "aria-label": "Закрыть",
-        style: { position: "absolute", top: "12px", right: "12px", width: "34px", height: "34px", border: "none", background: "var(--sand)", borderRadius: "999px", fontSize: "1.15rem", color: "var(--ink)", cursor: "pointer", lineHeight: 1, zIndex: 2 }
+        style: { position: "absolute", top: "12px", right: "12px", width: "34px", height: "34px", border: "none", background: "var(--sand)", borderRadius: "999px", fontSize: "1.15rem", color: "var(--ink)", cursor: "pointer", lineHeight: 1, zIndex: 4 }
       }, "✕"),
 
-      React.createElement("h2", { style: { margin: "0 0 6px", fontSize: "var(--fs-h3)", lineHeight: 1.15, paddingRight: "40px", color: "var(--ink)" } }, "Занять место на Разминке"),
-      React.createElement("p", { style: { margin: "0 0 18px", fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono)", letterSpacing: "var(--ls-mono-wide)", color: "var(--coral)" } }, "29 июля · 4 дня · 990 ₽"),
+      React.createElement("h2", { style: { flexShrink: 0, margin: "0 0 6px", fontSize: "var(--fs-h3)", lineHeight: 1.15, paddingRight: "40px", color: "var(--ink)" } }, "Занять место на Разминке"),
+      React.createElement("p", { style: { flexShrink: 0, margin: "0 0 16px", fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono)", letterSpacing: "var(--ls-mono-wide)", color: "var(--coral)" } }, "29 июля · 4 дня · 990 ₽"),
 
-      React.createElement("div", { style: { position: "relative", minHeight: loaded ? "0" : "220px" } },
-        !loaded && React.createElement("div", {
-          style: { position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, color: "var(--ink-55)" }
+      React.createElement("div", {
+          ref: scrollerRef, onScroll: checkHint,
+          style: { flex: "1 1 auto", minHeight: 0, overflowY: "auto", paddingBottom: "20px", WebkitOverflowScrolling: "touch" }
         },
-          React.createElement("span", { style: { width: 34, height: 34, borderRadius: "999px", border: "3px solid var(--hairline)", borderTopColor: "var(--coral)", animation: "leadSpin 0.7s linear infinite" } }),
-          React.createElement("span", { style: { fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono-sm)", letterSpacing: "var(--ls-mono-wide)" } }, "Загружаем форму…"),
-          React.createElement("style", null, "@keyframes leadSpin{to{transform:rotate(360deg)}}")
-        ),
-        React.createElement("iframe", {
-          key: openId,
-          src: widgetSrc(),
-          title: "Форма записи",
-          onLoad: () => setLoaded(true),
-          style: { display: "block", width: "100%", height: height + "px", border: "0", overflow: "hidden", opacity: loaded ? 1 : 0, transition: "opacity .2s ease" },
-          allow: "clipboard-write"
-        })
+        React.createElement("div", { style: { position: "relative", minHeight: loaded ? "0" : "220px" } },
+          !loaded && React.createElement("div", {
+            style: { position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, color: "var(--ink-55)" }
+          },
+            React.createElement("span", { style: { width: 34, height: 34, borderRadius: "999px", border: "3px solid var(--hairline)", borderTopColor: "var(--coral)", animation: "leadSpin 0.7s linear infinite" } }),
+            React.createElement("span", { style: { fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono-sm)", letterSpacing: "var(--ls-mono-wide)" } }, "Загружаем форму…"),
+            React.createElement("style", null, "@keyframes leadSpin{to{transform:rotate(360deg)}}")
+          ),
+          React.createElement("iframe", {
+            key: openId,
+            src: widgetSrc(),
+            title: "Форма записи",
+            onLoad: () => setLoaded(true),
+            style: { display: "block", width: "100%", height: height + "px", border: "0", overflow: "hidden", opacity: loaded ? 1 : 0, transition: "opacity .2s ease" },
+            allow: "clipboard-write"
+          })
+        )
+      ),
+
+      React.createElement("div", {
+          "aria-hidden": "true",
+          style: { position: "absolute", left: 0, right: 0, bottom: 0, height: "58px", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: "8px", background: "linear-gradient(to top, var(--paper) 38%, rgba(250,250,248,0))", pointerEvents: "none", opacity: showHint ? 1 : 0, transition: "opacity .2s ease", zIndex: 3 }
+        },
+        React.createElement("span", { style: { fontSize: "1.25rem", lineHeight: 1, color: "var(--coral)", animation: "leadBounce 1.2s ease-in-out infinite" } }, "↓"),
+        React.createElement("style", null, "@keyframes leadBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}")
       )
     )
   );
