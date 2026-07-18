@@ -170,7 +170,9 @@ function LeadModal() {
       fetch(LEADS_WEBHOOK_URL, { method: "POST", mode: "no-cors", keepalive: true, body: payload }).catch(() => {});
     }
 
-    window.location.href = REDIRECT_URL;
+    // если сайт встроен в iframe (GetCourse) — уводим всю страницу, а не только фрейм
+    try { window.top.location.href = REDIRECT_URL; }
+    catch (e) { window.location.href = REDIRECT_URL; }
   }
 
   if (!open) return null;
