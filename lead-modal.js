@@ -79,13 +79,6 @@ function LeadModal() {
           style: { flex: "1 1 auto", minHeight: 0, overflowY: "auto", paddingBottom: "20px", WebkitOverflowScrolling: "touch" }
         },
         React.createElement("div", { style: { position: "relative", minHeight: loaded ? "0" : "220px" } },
-          !loaded && React.createElement("div", {
-            style: { position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, color: "var(--ink-55)" }
-          },
-            React.createElement("span", { style: { width: 34, height: 34, borderRadius: "999px", border: "3px solid var(--hairline)", borderTopColor: "var(--coral)", animation: "leadSpin 0.7s linear infinite" } }),
-            React.createElement("span", { style: { fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono-sm)", letterSpacing: "var(--ls-mono-wide)" } }, "Загружаем форму…"),
-            React.createElement("style", null, "@keyframes leadSpin{to{transform:rotate(360deg)}}")
-          ),
           warm && React.createElement("iframe", {
             src: widgetSrc(),
             title: "Форма записи",
