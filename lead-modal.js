@@ -22,14 +22,15 @@ function LeadModal() {
   const [open, setOpen] = useState(false);
   const [openId, setOpenId] = useState(0);   // растёт при каждом открытии → свежий iframe
   const [height, setHeight] = useState(460);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    window.__openLeadModal = () => { setHeight(460); setOpenId(id => id + 1); setOpen(true); };
+    window.__openLeadModal = () => { setHeight(460); setLoaded(false); setOpenId(id => id + 1); setOpen(true); };
     function onMsg(e) {
       const d = e.data;
       if (d && d.uniqName === GK_UNIQ && d.height) {
         const h = parseInt(d.height, 10);
-        if (h > 0) setHeight(Math.max(320, h));
+        if (h > 0) { setHeight(Math.max(320, h)); setLoaded(true); }
       }
     }
     window.addEventListener("message", onMsg);
@@ -62,13 +63,23 @@ function LeadModal() {
       React.createElement("h2", { style: { margin: "0 0 6px", fontSize: "var(--fs-h3)", lineHeight: 1.15, paddingRight: "40px", color: "var(--ink)" } }, "Занять место на Разминке"),
       React.createElement("p", { style: { margin: "0 0 18px", fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono)", letterSpacing: "var(--ls-mono-wide)", color: "var(--coral)" } }, "29 июля · 4 дня · 990 ₽"),
 
-      React.createElement("iframe", {
-        key: openId,
-        src: widgetSrc(),
-        title: "Форма записи",
-        style: { display: "block", width: "100%", height: height + "px", border: "0", overflow: "hidden" },
-        allow: "clipboard-write"
-      })
+      React.createElement("div", { style: { position: "relative", minHeight: loaded ? "0" : "220px" } },
+        !loaded && React.createElement("div", {
+          style: { position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14, color: "var(--ink-55)" }
+        },
+          React.createElement("span", { style: { width: 34, height: 34, borderRadius: "999px", border: "3px solid var(--hairline)", borderTopColor: "var(--coral)", animation: "leadSpin 0.7s linear infinite" } }),
+          React.createElement("span", { style: { fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono-sm)", letterSpacing: "var(--ls-mono-wide)" } }, "Загружаем форму…"),
+          React.createElement("style", null, "@keyframes leadSpin{to{transform:rotate(360deg)}}")
+        ),
+        React.createElement("iframe", {
+          key: openId,
+          src: widgetSrc(),
+          title: "Форма записи",
+          onLoad: () => setLoaded(true),
+          style: { display: "block", width: "100%", height: height + "px", border: "0", overflow: "hidden", opacity: loaded ? 1 : 0, transition: "opacity .2s ease" },
+          allow: "clipboard-write"
+        })
+      )
     )
   );
 }
