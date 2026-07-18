@@ -52,12 +52,15 @@ function LeadModal() {
     },
     React.createElement("div", {
         onClick: e => e.stopPropagation(),
-        style: { position: "relative", width: "100%", maxWidth: "480px", maxHeight: "92vh", overflowY: "auto", background: "var(--paper)", borderRadius: "var(--r-card)", padding: "48px 14px 14px", boxShadow: "var(--shadow-lift)" }
+        style: { position: "relative", width: "100%", maxWidth: "480px", maxHeight: "92vh", overflowY: "auto", background: "var(--paper)", borderRadius: "var(--r-card)", padding: "clamp(22px, 5vw, 32px) clamp(16px, 4vw, 20px) 16px", boxShadow: "var(--shadow-lift)" }
       },
       React.createElement("button", {
         type: "button", onClick: () => setOpen(false), "aria-label": "Закрыть",
         style: { position: "absolute", top: "12px", right: "12px", width: "34px", height: "34px", border: "none", background: "var(--sand)", borderRadius: "999px", fontSize: "1.15rem", color: "var(--ink)", cursor: "pointer", lineHeight: 1, zIndex: 2 }
       }, "✕"),
+
+      React.createElement("h2", { style: { margin: "0 0 6px", fontSize: "var(--fs-h3)", lineHeight: 1.15, paddingRight: "40px", color: "var(--ink)" } }, "Занять место на Разминке"),
+      React.createElement("p", { style: { margin: "0 0 18px", fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono)", letterSpacing: "var(--ls-mono-wide)", color: "var(--coral)" } }, "29 июля · 4 дня · 990 ₽"),
 
       React.createElement("iframe", {
         key: openId,
