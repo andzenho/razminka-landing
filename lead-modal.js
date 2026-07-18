@@ -3,9 +3,9 @@
 const useState = React.useState, useEffect = React.useEffect, useRef = React.useRef;
 
 /* ── Форма захвата GetCourse ──────────────────────────────────────────────
-   Показываем родной виджет ГК в нашем попапе. Форму строим свежей при каждом
-   открытии → токены сессии подставляются автоматически. Отправка, создание
-   платной сделки (willCreatePaidDeal) и переход на оплату — на стороне ГК. */
+   Виджет ГК монтируется вместе со страницей (в фоне, чуть отложенно) и держится
+   готовым → по клику попап открывается мгновенно, форма уже загружена.
+   Отправка, платная сделка (willCreatePaidDeal) и оплата — на стороне ГК. */
 const GK_HOST = "https://kerrycatt1.getcourse.ru";
 const GK_WIDGET_ID = "1632055";
 const GK_UNIQ = "32505d6440058a3adaf8e327e50b3d7045e93618";
@@ -20,7 +20,7 @@ function widgetSrc() {
 
 function LeadModal() {
   const [open, setOpen] = useState(false);
-  const [openId, setOpenId] = useState(0);   // растёт при каждом открытии → свежий iframe
+  const [warm, setWarm] = useState(false);   // форма подгружена в фоне
   const [height, setHeight] = useState(460);
   const [loaded, setLoaded] = useState(false);
   const [showHint, setShowHint] = useState(false);
@@ -33,13 +33,10 @@ function LeadModal() {
   }
 
   useEffect(() => {
-    if (!open) return;
-    const t = setTimeout(checkHint, 60);
-    return () => clearTimeout(t);
-  }, [open, height, loaded]);
-
-  useEffect(() => {
-    window.__openLeadModal = () => { setHeight(460); setLoaded(false); setShowHint(false); setOpenId(id => id + 1); setOpen(true); };
+    window.__openLeadModal = () => { setWarm(true); setOpen(true); };
+    // прогрев формы ~1.2с после загрузки страницы — не мешает рендеру лендинга,
+    // но к клику форма уже готова (мгновенное открытие)
+    const warmT = setTimeout(() => setWarm(true), 1200);
     function onMsg(e) {
       const d = e.data;
       if (d && d.uniqName === GK_UNIQ && d.height) {
@@ -48,7 +45,7 @@ function LeadModal() {
       }
     }
     window.addEventListener("message", onMsg);
-    return () => window.removeEventListener("message", onMsg);
+    return () => { clearTimeout(warmT); window.removeEventListener("message", onMsg); };
   }, []);
 
   useEffect(() => {
@@ -56,13 +53,13 @@ function LeadModal() {
     function onKey(e) { if (e.key === "Escape") setOpen(false); }
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
-    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
-  }, [open]);
+    const t = setTimeout(checkHint, 60);
+    return () => { document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; clearTimeout(t); };
+  }, [open, height, loaded]);
 
-  if (!open) return null;
-
+  // Оверлей всегда в DOM (чтобы iframe не перезагружался), видимость — через стиль.
   return React.createElement("div", {
-      style: { position: "fixed", inset: 0, zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(20,20,15,0.6)", padding: "20px" },
+      style: { position: "fixed", inset: 0, zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(20,20,15,0.6)", padding: "20px", visibility: open ? "visible" : "hidden", opacity: open ? 1 : 0, pointerEvents: open ? "auto" : "none", transition: "opacity .2s ease" },
       onClick: () => setOpen(false)
     },
     React.createElement("div", {
@@ -89,8 +86,7 @@ function LeadModal() {
             React.createElement("span", { style: { fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono-sm)", letterSpacing: "var(--ls-mono-wide)" } }, "Загружаем форму…"),
             React.createElement("style", null, "@keyframes leadSpin{to{transform:rotate(360deg)}}")
           ),
-          React.createElement("iframe", {
-            key: openId,
+          warm && React.createElement("iframe", {
             src: widgetSrc(),
             title: "Форма записи",
             onLoad: () => setLoaded(true),
