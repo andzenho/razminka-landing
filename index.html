@@ -4,6 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Разминка — лендинг</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="styles.css" />
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -114,7 +117,7 @@
 
   function Sticker({ src, alt, size, top, right, bottom, left, rotate }) {
     return React.createElement("img", {
-      src, alt, draggable: false,
+      src, alt, draggable: false, loading: "lazy", decoding: "async",
       style: {
         position: "absolute", top, right, bottom, left,
         width: size || "clamp(56px, 13vw, 104px)", height: "auto",
@@ -142,9 +145,9 @@
         React.createElement("div", { style: { position: "relative", zIndex: 2, display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 12 } },
           React.createElement(RecIndicator, { time: "00:00", style: { height: "28px", boxSizing: "border-box" } }),
           React.createElement("span", { style: { display: "inline-flex", alignItems: "center", gap: 6, height: "28px", boxSizing: "border-box", background: "var(--ink)", color: "var(--paper)", padding: "0 12px 0 5px", borderRadius: "var(--r-pill)", boxShadow: "var(--shadow-pill)" } },
-            React.createElement("img", { src: "assets/karina-avatar.png", alt: "Карина", style: { width: 18, height: 18, borderRadius: "999px", objectFit: "cover", display: "block", flexShrink: 0 } }),
+            React.createElement("img", { src: "assets/karina-avatar.webp", alt: "Карина", style: { width: 18, height: 18, borderRadius: "999px", objectFit: "cover", display: "block", flexShrink: 0 } }),
             React.createElement("span", { style: { fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "var(--fs-timecode)", lineHeight: 1 } }, "kerry.catt"),
-            React.createElement("img", { src: "assets/verified-badge.png", alt: "verified", style: { width: 12, height: 12, display: "block", flexShrink: 0 } })
+            React.createElement("img", { src: "assets/verified-badge.webp", alt: "verified", style: { width: 12, height: 12, display: "block", flexShrink: 0 } })
           )
         ),
         React.createElement("div", { style: { position: "relative", zIndex: 2, marginTop: "clamp(1.5rem, 10vh, 5rem)", marginBottom: "8vh" } },
@@ -159,7 +162,7 @@
         )
       ),
       React.createElement(Section, { style: { background: "var(--sand)", position: "relative" } },
-        React.createElement(Sticker, { src: "assets/stickers/sticker-07.png", alt: "", size: "clamp(40px, 9vw, 76px)", top: "clamp(0px, 1vw, 12px)", right: "clamp(4px, 4vw, 28px)", rotate: -9 }),
+        React.createElement(Sticker, { src: "assets/stickers/sticker-07.webp", alt: "", size: "clamp(40px, 9vw, 76px)", top: "clamp(0px, 1vw, 12px)", right: "clamp(4px, 4vw, 28px)", rotate: -9 }),
         React.createElement("h2", { style: { fontSize: "var(--fs-h1)", margin: "0 auto 32px", maxWidth: "20ch", textAlign: "center" } }, "Хочешь вести блог, но каждый раз что-то ", React.createElement(HandCircle, null, "останавливает"), "?"),
         React.createElement("div", { style: { position: "relative", display: "flex", flexDirection: "column", alignItems: "center", gap: 16, marginBottom: 32, maxWidth: "var(--measure)", marginLeft: "auto", marginRight: "auto" } },
           React.createElement(PainNote, { rotate: -1.2, align: "center" }, "Снимаешь, а ", React.createElement(HighlightMark, { tilt: false, style: { backgroundImage: "linear-gradient(var(--coral), var(--coral))", backgroundSize: "100% 100%", backgroundPosition: "0 0", color: "var(--paper)" } }, "никто не смотрит"), ", и руки опускаются."),
@@ -179,12 +182,12 @@
           React.createElement("h2", { style: { fontSize: "var(--fs-h1)", margin: "0 0 32px", textAlign: "center" } }, "Ты уже покупала обучение по блогу или пробовала бесплатное?"),
           React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 16, marginBottom: 32 }, className: "why-grid" },
             React.createElement(TiltCard, { tone: "paper", tilt: "var(--tilt)", style: { position: "relative", overflow: "visible" } },
-              React.createElement(Sticker, { src: "assets/stickers/sticker-09.png", alt: "", size: "clamp(52px, 12vw, 88px)", top: "clamp(-34px, -6vw, -18px)", right: "clamp(-14px, -2vw, 8px)", rotate: 10 }),
+              React.createElement(Sticker, { src: "assets/stickers/sticker-09.webp", alt: "", size: "clamp(52px, 12vw, 88px)", top: "clamp(-34px, -6vw, -18px)", right: "clamp(-14px, -2vw, 8px)", rotate: 10 }),
               React.createElement("span", { style: { fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono-sm)", letterSpacing: "var(--ls-mono-wide)", color: "var(--text-muted)", display: "block", marginBottom: 10 } }, "00:00"),
               React.createElement("p", { style: { margin: 0, fontSize: "var(--fs-lead)", fontWeight: 600, color: "var(--ink)" } }, "Курсы по визуалу, монтажу, ведению блога — одна и та же вода водичка, красивые слова ни о чём. Досматриваешь до половины, а камеру так и не включаешь.")
             ),
             React.createElement("div", { style: { position: "relative", background: "var(--ink)", borderRadius: "var(--r-card)", padding: "24px 26px" } },
-              React.createElement(Sticker, { src: "assets/stickers/sticker-05.png", alt: "", size: "clamp(50px, 12vw, 88px)", top: "clamp(-32px, -6vw, -16px)", right: "clamp(-10px, -1vw, 8px)", rotate: 9 }),
+              React.createElement(Sticker, { src: "assets/stickers/sticker-05.webp", alt: "", size: "clamp(50px, 12vw, 88px)", top: "clamp(-32px, -6vw, -16px)", right: "clamp(-10px, -1vw, 8px)", rotate: 9 }),
               React.createElement("span", { style: { fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono-sm)", letterSpacing: "var(--ls-mono-wide)", color: "var(--coral)", display: "block", marginBottom: 10 } }, "00:14"),
               React.createElement("p", { style: { margin: 0, fontSize: "var(--fs-lead)", fontWeight: 700, color: "var(--paper)" } }, "На Разминке ты уже на третий день снимешь свой первый разговорный рилс и сразу получишь на него обратную связь.")
             )
@@ -196,7 +199,7 @@
         React.createElement("h2", { style: { fontSize: "var(--fs-h1)", margin: "0 0 40px", color: "var(--paper)" } }, "Кто ведёт Разминку"),
         React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 40, alignItems: "start", marginBottom: 56 } },
           React.createElement("div", { style: { position: "relative" } },
-            React.createElement(TapedPhoto, { rotate: -2, style: { width: "100%" } }, React.createElement("img", { src: "assets/karina.png", alt: "Карина", style: { width: "100%", aspectRatio: "4/5", objectFit: "cover", display: "block" } })),
+            React.createElement(TapedPhoto, { rotate: -2, style: { width: "100%" } }, React.createElement("img", { src: "assets/karina.webp", alt: "Карина", loading: "lazy", decoding: "async", style: { width: "100%", aspectRatio: "4/5", objectFit: "cover", display: "block" } })),
             React.createElement("div", { style: { position: "absolute", right: -6, bottom: 8, zIndex: 2 } }, React.createElement(StatCard, { label: "Аудитория", value: "2,5 млн", delta: "Instagram · YouTube · TikTok", deltaPositive: true }))
           ),
           React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: 18, paddingTop: 4 } },
@@ -210,7 +213,7 @@
         React.createElement("h3", { style: { fontSize: "var(--fs-h2)", margin: "0 0 28px", color: "var(--paper)", textAlign: "center" } }, "Эти ролики сняты по методу Яппинга"),
         React.createElement("div", { className: "reels-grid", style: { marginBottom: 40 } },
           Array.from({ length: 8 }).map((_, i) => React.createElement("div", { key: i, style: { position: "relative" } },
-            React.createElement(Viewfinder, { color: "var(--paper)" }, React.createElement("img", { src: `assets/reel${i + 1}.png`, alt: `рилс ${i + 1}`, style: { aspectRatio: "9/16", width: "100%", objectFit: "cover", display: "block" } }))
+            React.createElement(Viewfinder, { color: "var(--paper)" }, React.createElement("img", { src: `assets/reel${i + 1}.webp`, alt: `рилс ${i + 1}`, loading: "lazy", decoding: "async", style: { aspectRatio: "9/16", width: "100%", objectFit: "cover", display: "block" } }))
           ))
         ),
         React.createElement("p", { style: { maxWidth: "var(--measure)", margin: "0 auto 12px", color: "rgba(250,250,248,0.82)", fontSize: "var(--fs-body)", textAlign: "center" } }, "Ни один из этих рилсов не снимался по шаблону. Все начинались с обычного разговора."),
@@ -230,7 +233,7 @@
       React.createElement(Section, { id: "offer", style: { background: "var(--sand)" } },
         React.createElement("h2", { style: { fontSize: "var(--fs-h1)", margin: "0 0 32px", textAlign: "center" } }, "Сколько это стоит?"),
         React.createElement("div", { style: { position: "relative", background: "var(--ink)", color: "var(--paper)", borderRadius: "var(--r-card)", padding: "clamp(24px, 6vw, 44px)", display: "flex", flexDirection: "column", gap: 24, marginBottom: 40 } },
-          React.createElement(Sticker, { src: "assets/stickers/sticker-04.png", alt: "", top: "clamp(-30px, -5vw, -14px)", right: "clamp(4px, 4vw, 24px)", rotate: 8 }),
+          React.createElement(Sticker, { src: "assets/stickers/sticker-04.webp", alt: "", top: "clamp(-30px, -5vw, -14px)", right: "clamp(4px, 4vw, 24px)", rotate: 8 }),
           React.createElement(RecIndicator, { time: "00:00" }),
           React.createElement("p", { style: { margin: 0, color: "var(--paper)", fontSize: "var(--fs-lead)", fontWeight: 600, maxWidth: "56ch" } }, "Что ты получишь за 4 дня"),
           React.createElement("ul", { style: { listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 16 } },
@@ -256,7 +259,7 @@
         React.createElement("div", { style: { marginBottom: 44 } }, React.createElement(Cta, null)),
         React.createElement("h2", { style: { fontSize: "var(--fs-h1)", margin: "0 0 28px", textAlign: "center", color: "var(--coral)" } }, "Подарки для первых 50 участников"),
         React.createElement("div", { style: { position: "relative", maxWidth: "760px", margin: "0 auto" } },
-          React.createElement(Sticker, { src: "assets/stickers/sticker-10.png", alt: "", size: "clamp(52px, 11vw, 84px)", top: "clamp(-68px, -11vw, -44px)", right: "clamp(-16px, -3vw, 2px)", rotate: -11 }),
+          React.createElement(Sticker, { src: "assets/stickers/sticker-10.webp", alt: "", size: "clamp(52px, 11vw, 84px)", top: "clamp(-68px, -11vw, -44px)", right: "clamp(-16px, -3vw, 2px)", rotate: -11 }),
           bonuses.map((x, i) => React.createElement("div", { key: i, style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 16, padding: "22px 4px", borderBottom: "1px solid var(--hairline)" } },
             React.createElement("div", null,
               React.createElement("h3", { style: { margin: "0 0 6px", fontFamily: "var(--font-body)", fontWeight: 800, fontSize: "var(--fs-lead)", color: "var(--ink)" } }, x.t),
