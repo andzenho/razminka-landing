@@ -1,3 +1,0 @@
-/* Webfonts — Unbounded (display), Manrope (body), JetBrains Mono (data), Caveat (script).
-   Загружаются прямым <link> в <head> index.html (preconnect + параллельно), а не
-   вложенным @import — так надёжнее и быстрее, особенно при вставке в конструкторы. */
