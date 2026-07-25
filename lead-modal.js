@@ -2,23 +2,34 @@
 (function(){
 const useState = React.useState, useEffect = React.useEffect, useRef = React.useRef;
 
-/* ── Форма захвата GetCourse ──────────────────────────────────────────────
-   Виджет ГК монтируется вместе со страницей (в фоне, чуть отложенно) и держится
-   готовым → по клику попап открывается мгновенно, форма уже загружена.
-   Отправка, платная сделка (willCreatePaidDeal) и оплата — на стороне ГК. */
+/* ── Формы/оплата GetCourse ────────────────────────────────────────────────
+   Виджет ГК держится в попапе готовым → по клику открывается мгновенно.
+   Отправка, платная сделка (willCreatePaidDeal) и оплата — на стороне ГК.
+   Две конфигурации: оплата в рублях (прогревается в фоне) и оплата зарубежной
+   картой (грузится по первому клику). */
 const GK_HOST = "https://kerrycatt1.getcourse.ru";
-const GK_WIDGET_ID = "1632055";
-const GK_UNIQ = "32505d6440058a3adaf8e327e50b3d7045e93618";
 
-function widgetSrc() {
-  var qs = window.location.search ? window.location.search.substring(1) + "&" : "";
-  return GK_HOST + "/pl/lite/widget/widget?" + qs +
-    "id=" + GK_WIDGET_ID +
-    "&ref=" + encodeURIComponent(document.referrer) +
-    "&loc=" + encodeURIComponent(document.location.href);
-}
+// widgetId — id виджета ГК; uniqName — id встраиваемого скрипта (для postMessage высоты).
+const RUBLE_CFG = {
+  widgetId: "1632055", uniqName: "32505d6440058a3adaf8e327e50b3d7045e93618",
+  openerName: "__openLeadModal", prewarm: true,
+  title: "Занять место на Разминке", subtitle: "29 июля · 4 дня · 990 ₽"
+};
+const FOREIGN_CFG = {
+  widgetId: "1634983", uniqName: "28ba78ae65137e386fbc6d89aefd35d44b751249",
+  openerName: "__openForeignModal", warmerName: "__warmForeignModal", prewarm: false,
+  title: "Оплата зарубежной картой", subtitle: "29 июля · 4 дня · $15 · €13"
+};
 
-function LeadModal() {
+function LeadModal(cfg) {
+  const GK_WIDGET_ID = cfg.widgetId, GK_UNIQ = cfg.uniqName;
+  function widgetSrc() {
+    var qs = window.location.search ? window.location.search.substring(1) + "&" : "";
+    return GK_HOST + "/pl/lite/widget/widget?" + qs +
+      "id=" + GK_WIDGET_ID +
+      "&ref=" + encodeURIComponent(document.referrer) +
+      "&loc=" + encodeURIComponent(document.location.href);
+  }
   const [open, setOpen] = useState(false);
   const [warm, setWarm] = useState(false);   // форма подгружена в фоне
   const [height, setHeight] = useState(460);
@@ -33,10 +44,12 @@ function LeadModal() {
   }
 
   useEffect(() => {
-    window.__openLeadModal = () => { setWarm(true); setOpen(true); };
-    // прогрев формы ~1.2с после загрузки страницы — не мешает рендеру лендинга,
-    // но к клику форма уже готова (мгновенное открытие)
-    const warmT = setTimeout(() => setWarm(true), 1200);
+    window[cfg.openerName] = () => { setWarm(true); setOpen(true); };
+    // прогрев по наведению/тапу на кнопку (для зарубежной) — форма готова к клику.
+    if (cfg.warmerName) window[cfg.warmerName] = () => setWarm(true);
+    // прогрев формы ~1.2с после загрузки (только для основной, рублёвой):
+    // не мешает рендеру, но к клику форма уже готова. Зарубежная грузится по интенту.
+    const warmT = cfg.prewarm ? setTimeout(() => setWarm(true), 1200) : null;
     function onMsg(e) {
       const d = e.data;
       if (d && d.uniqName === GK_UNIQ && d.height) {
@@ -45,7 +58,7 @@ function LeadModal() {
       }
     }
     window.addEventListener("message", onMsg);
-    return () => { clearTimeout(warmT); window.removeEventListener("message", onMsg); };
+    return () => { if (warmT) clearTimeout(warmT); window.removeEventListener("message", onMsg); };
   }, []);
 
   useEffect(() => {
@@ -71,8 +84,8 @@ function LeadModal() {
         style: { position: "absolute", top: "12px", right: "12px", width: "34px", height: "34px", border: "none", background: "var(--sand)", borderRadius: "999px", fontSize: "1.15rem", color: "var(--ink)", cursor: "pointer", lineHeight: 1, zIndex: 4 }
       }, "✕"),
 
-      React.createElement("h2", { style: { flexShrink: 0, margin: "0 0 6px", fontSize: "var(--fs-h3)", lineHeight: 1.15, paddingRight: "40px", color: "var(--ink)" } }, "Занять место на Разминке"),
-      React.createElement("p", { style: { flexShrink: 0, margin: "0 0 16px", fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono)", letterSpacing: "var(--ls-mono-wide)", color: "var(--coral)" } }, "29 июля · 4 дня · 990 ₽"),
+      React.createElement("h2", { style: { flexShrink: 0, margin: "0 0 6px", fontSize: "var(--fs-h3)", lineHeight: 1.15, paddingRight: "40px", color: "var(--ink)" } }, cfg.title),
+      React.createElement("p", { style: { flexShrink: 0, margin: "0 0 16px", fontFamily: "var(--font-mono)", fontSize: "var(--fs-mono)", letterSpacing: "var(--ls-mono-wide)", color: "var(--coral)" } }, cfg.subtitle),
 
       React.createElement("div", {
           ref: scrollerRef, onScroll: checkHint,
@@ -100,5 +113,6 @@ function LeadModal() {
   );
 }
 
-ReactDOM.createRoot(document.getElementById("lead-modal-root")).render(React.createElement(LeadModal));
+ReactDOM.createRoot(document.getElementById("lead-modal-root")).render(React.createElement(LeadModal, RUBLE_CFG));
+ReactDOM.createRoot(document.getElementById("pay-foreign-root")).render(React.createElement(LeadModal, FOREIGN_CFG));
 })();
