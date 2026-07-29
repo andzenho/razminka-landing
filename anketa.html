@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<title>Анкета предзаписи на Большую Игру</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://kerrycatt.online">
+<link rel="dns-prefetch" href="https://kerrycatt.online">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Caveat:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css" />
+<style>
+  html, body { margin: 0; background: var(--paper); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body { color: var(--ink); font-family: var(--font-body); }
+
+  /* Одна колонка по центру, mobile-first */
+  .wrap {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: clamp(28px, 7vw, 52px) var(--gutter) clamp(48px, 10vw, 80px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 1 · Надзаголовок */
+  .eyebrow {
+    margin: 0 0 10px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: var(--ls-mono-wide);
+    text-transform: uppercase;
+    color: var(--coral);
+  }
+
+  /* Старт — отдельный акцентный бейдж */
+  .pill {
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    margin: 0 0 clamp(20px, 5vw, 28px);
+    padding: 7px 15px;
+    background: var(--lime);
+    color: var(--ink);
+    border-radius: var(--r-pill);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--fs-mono);
+    letter-spacing: var(--ls-mono-wide);
+    text-transform: uppercase;
+  }
+
+  /* 2 · H1 */
+  .h1 {
+    margin: 0 0 clamp(16px, 3.5vw, 22px);
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: var(--w-display);
+    font-size: clamp(1.8rem, 7.2vw, 2.5rem);
+    line-height: 1.05;
+    letter-spacing: var(--ls-display);
+    text-transform: uppercase;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .h1 .line { display: block; }
+
+  /* Лайм-маркер под словом — как HighlightMark в дизайн-системе */
+  mark.mark {
+    background: transparent;
+    color: inherit;
+    position: relative;
+    display: inline;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    padding: 0.02em 0.14em;
+    background-image: linear-gradient(var(--marker), var(--marker));
+    background-repeat: no-repeat;
+    background-size: 100% 0.62em;
+    background-position: 0 86%;
+    transform: rotate(-0.6deg);
+  }
+  /* Акцент на ключевом слове в светлом тексте — контрастнее на лайме.
+     Правый паддинг убран, иначе фон маркера отталкивает следующую запятую
+     («40 дней ,»). Знак должен прижиматься к слову. */
+  mark.mark.ac { color: var(--ink); font-weight: 700; padding-right: 0.04em; margin-right: -0.03em; }
+
+  /* 3 · Оффер */
+  .offer { margin: 0 0 clamp(22px, 5vw, 30px); }
+  .offer p {
+    margin: 0 auto 12px;
+    text-align: center;
+    max-width: 52ch;
+    font-size: 1rem;       /* 16px — ведущий абзац оффера */
+    line-height: 1.55;
+    color: var(--ink-70);
+    font-weight: 500;
+  }
+  /* Второй абзац — вспомогательный: мельче и светлее первого */
+  .offer p:last-child {
+    margin-bottom: 0;
+    font-size: 0.875rem;   /* 14px */
+    color: var(--ink-55);
+  }
+
+  /* 4/6 · Заголовки секций — display-шрифт, как на Разминке.
+     Тихая моно-подпись сверху + громкий Unbounded-заголовок. */
+  .sec-note {
+    margin: 0 0 10px;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: var(--ls-mono-wide);
+    text-transform: uppercase;
+    color: var(--ink-55);
+  }
+  .sec-title {
+    margin: 0 0 clamp(14px, 3vw, 18px);
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: var(--w-display);
+    font-size: clamp(1.15rem, 3.4vw, 1.45rem);
+    line-height: 1.25;
+    letter-spacing: var(--ls-display);
+    color: var(--ink);
+    text-wrap: balance;
+  }
+
+  /* 5 · Карточки — идиомы Разминки: мобильно — компактные строки,
+     на десктопе — плитки 2×2 (как bonus-grid) + hero-панч на всю ширину.
+     Цветной торец (DayCard), лёгкий наклон «съёмка с рук»,
+     моно-индекс — угловой таймкод. */
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 0 0 clamp(28px, 6vw, 38px);
+  }
+  .card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--paper);
+    border: 1px solid var(--hairline);
+    border-left: 6px solid var(--sand);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-card);
+    transform: rotate(-0.5deg);
+    transition: transform var(--dur) var(--ease-out), box-shadow var(--dur) var(--ease-out);
+  }
+  .card:nth-child(even) { transform: rotate(0.45deg); }
+  .card:hover {
+    transform: rotate(0deg) translateY(-2px);
+    box-shadow: var(--shadow-lift);
+  }
+  .card .ico {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: var(--sand);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .card .t {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    line-height: 1.35;
+    color: var(--ink);
+    text-align: left;
+    padding-right: 30px; /* не наезжать на угловой индекс */
+  }
+  /* моно-индекс — угловой таймкод карточки */
+  .card .num {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono-sm);
+    font-weight: 700;
+    letter-spacing: var(--ls-mono);
+    color: var(--ink-38);
+  }
+  /* hero — самое сильное обещание: лаймовый маркер, как бейдж и выделения */
+  .card--hero {
+    background: var(--lime);
+    border-color: transparent;
+    border-left-color: var(--ink);
+  }
+  .card--hero .ico { background: rgba(250, 250, 248, 0.6); }
+  .card--hero .t { color: var(--ink); font-weight: 800; }
+  .card--hero .num { color: var(--ink-55); }
+
+  /* Десктоп: плитки 2×2, hero — во всю ширину, контент заполняет карточку */
+  @media (min-width: 620px) {
+    .cards { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 18px 20px;
+    }
+    .card .t { padding-right: 0; }
+    .card--hero {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      padding: 22px 24px;
+    }
+    .card--hero .t { font-size: var(--fs-lead); padding-right: 0; }
+  }
+
+  /* 6 · Подзаголовок формы — тот же стиль заголовка секции */
+
+  /* 7 · Контейнер формы (виджет ГК инжектит iframe и сам тянет высоту).
+     min-height не даёт схлопнуться до загрузки; высота дальше — по контенту. */
+  .form-box {
+    width: 100%;
+    /* Полная высота формы ГК ~900px — резервируем сразу, чтобы форма
+       гарантированно помещалась и вёрстка не дёргалась при загрузке. */
+    min-height: 920px;
+  }
+
+  /* 8 · Микрокопия под формой */
+  .microcopy {
+    margin: 14px 0 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: var(--fs-mono);
+    letter-spacing: var(--ls-mono);
+    color: var(--ink-55);
+  }
+</style>
+</head>
+<body class="grain-fixed">
+<main class="wrap">
+
+  <!-- 1 · Надзаголовок + отдельный бейдж старта -->
+  <p class="eyebrow">БОЛЬШАЯ ИГРА ОТ @KERRY.CATT</p>
+  <span class="pill">СТАРТ 15 АВГУСТА</span>
+
+  <!-- 2 · H1 -->
+  <h1 class="h1">
+    <span class="line">АНКЕТА ПРЕДЗАПИСИ</span>
+    <span class="line">НА <mark class="mark">«БОЛЬШУЮ ИГРУ»</mark></span>
+  </h1>
+
+  <!-- 3 · Оффер -->
+  <div class="offer">
+    <p>Большая Игра это <mark class="mark ac">40 дней</mark>, за которые ты создашь блог, о котором давно мечтаешь. Будешь снимать видео, которые собирают просмотры, и на тебя начнут подписываться люди, которым правда интересно следить за тобой.</p>
+    <p>Веду тебя я, Карина, вместе со своей командой. Рядом идут такие же девушки, которые вместе с тобой качают свой блог. Это не курс с уроками, которые бросают на второй неделе, а живая игра, с которой не захочется сливаться.</p>
+  </div>
+
+  <!-- 4 · Подзаголовок-переход: тихая моно-подпись + display-заголовок -->
+  <p class="sec-note">Анкета ни к чему не обязывает.</p>
+  <h2 class="sec-title">Заполнишь сейчас и получишь:</h2>
+
+  <!-- 5 · Список из 5 карточек -->
+  <div class="cards">
+    <div class="card">
+      <span class="ico" aria-hidden="true">💬</span>
+      <span class="t">Команда подробно расскажет про Игру и что в неё входит</span>
+      <span class="num" aria-hidden="true">01</span>
+    </div>
+    <div class="card">
+      <span class="ico" aria-hidden="true">🎯</span>
+      <span class="t">Личную консультацию: разберём, какой блог тебе вести и что снимать</span>
+      <span class="num" aria-hidden="true">02</span>
+    </div>
+    <div class="card">
+      <span class="ico" aria-hidden="true">🔒</span>
+      <span class="t">Доступ в закрытый канал про Большую Игру</span>
+      <span class="num" aria-hidden="true">03</span>
+    </div>
+    <div class="card">
+      <span class="ico" aria-hidden="true">✅</span>
+      <span class="t">Место на потоке с куратором</span>
+      <span class="num" aria-hidden="true">04</span>
+    </div>
+    <div class="card card--hero">
+      <span class="ico" aria-hidden="true">💸</span>
+      <span class="t">Самую низкую цену за участие</span>
+      <span class="num" aria-hidden="true">05</span>
+    </div>
+  </div>
+
+  <!-- 6 · Подзаголовок формы -->
+  <h2 class="sec-title">Заполняй прямо здесь, это <mark class="mark ac">пара минут</mark>.</h2>
+
+  <!-- 7 · Форма (внешний виджет ГК — вставлен ровно как есть, один раз) -->
+  <div class="form-box">
+    <script id="4936579a160199560786e56e8447ba380140dc7e" src="https://kerrycatt.online/pl/lite/widget/script?id=1635020"></script>
+  </div>
+
+  <!-- Страховка высоты формы: если ГК занижает высоту iframe, низ (кнопка/галочки)
+       мог бы срезаться его overflow:hidden. Тут гарантируем небольшой запас и
+       снимаем обрезку с контейнера. setTimeout(…,0) переприменяет ПОСЛЕ обработчика ГК. -->
+  <script>
+  (function () {
+    var UNIQ = '4936579a160199560786e56e8447ba380140dc7e';
+    var PAD = 24; // px запаса, чтобы низ формы не срезался
+    var lastH = 0;
+    function apply() {
+      var box = document.querySelector('.form-box');
+      if (!box) return;
+      box.style.overflow = 'visible';
+      if (lastH > 0) {
+        var v = (lastH + PAD) + 'px';
+        var fr = box.querySelector('iframe');
+        box.style.height = v;
+        if (fr) fr.style.height = v;
+      }
+    }
+    window.addEventListener('message', function (e) {
+      var d = e.data;
+      if (d && d.uniqName === UNIQ && d.height) {
+        var h = parseInt(d.height, 10);
+        if (h > 0) { lastH = h; apply(); setTimeout(apply, 0); }
+      }
+    }, false);
+  }());
+  </script>
+
+  <!-- 8 · Микрокопия под формой -->
+  <p class="microcopy">Никаких рассылок и звонков. Напишем только в Telegram.</p>
+
+</main>
+</body>
+</html>

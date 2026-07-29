@@ -1,0 +1,90 @@
+/* ═══════════════════════════════════════════════════════════════
+   Анкета предзаписи «Большая Игра» — стиль формы ГетКурса
+   Виджет id=1635020 · вставить в CSS формы в ГК
+   Палитра и шрифты — дизайн-система лендинга Разминки
+   ═══════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* — Фон страницы виджета: как бумага лендинга — */
+body, .lite-page { background: #FAFAF8 !important; }
+.lt-block.lt-form { background: transparent !important; }
+
+/* — Подписи полей: моно-капс, как служебные лейблы Разминки — */
+.field-label {
+  font-family: 'JetBrains Mono', monospace !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: rgba(20, 20, 15, 0.55) !important;
+  margin-bottom: 8px !important;
+}
+
+/* — Поля ввода — */
+.f-input, .form-control.f-input {
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 16px !important;
+  color: #14140F !important;
+  background: #FFFFFF !important;
+  border: 1px solid rgba(20, 20, 15, 0.38) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  padding: 14px 16px !important;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.f-input::placeholder { color: rgba(20, 20, 15, 0.38) !important; }
+.f-input:focus {
+  border-color: #14140F !important;
+  box-shadow: 0 0 0 3px rgba(198, 244, 50, 0.55) !important; /* лаймовое кольцо */
+  outline: none !important;
+}
+/* телефон: не съедаем место под флаг страны */
+.f-input.phone-masked-input { padding-left: 52px !important; }
+
+/* — Кнопка: коралловый пилюль, display-шрифт — */
+.btn.f-btn.btn-success, button.f-btn {
+  font-family: 'Unbounded', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  letter-spacing: 0 !important;
+  color: #FAFAF8 !important;
+  background-color: #FF4D3D !important;
+  border: none !important;
+  box-shadow: 0 12px 30px -10px rgba(255, 77, 61, 0.7) !important;
+  padding: 18px 44px !important;
+  transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+}
+.btn.f-btn.btn-success:hover {
+  background-color: #FF4D3D !important;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px -10px rgba(255, 77, 61, 0.85) !important;
+}
+.btn.f-btn.btn-success:active { transform: scale(0.97); }
+/* пока галочки не проставлены — кнопка приглушена */
+.btn.f-btn[disabled] { opacity: 0.5; box-shadow: none !important; }
+
+/* — Галочки согласий — */
+.global-confirm-checkbox-block,
+.global-confirm-checkbox-block p,
+.checkbox-text {
+  font-family: 'Manrope', sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: rgba(20, 20, 15, 0.55) !important;
+}
+/* ссылки (Оферта, Политика…) — коралл вместо вшитого красного <font> */
+.global-confirm-checkbox-block a,
+.global-confirm-checkbox-block a font,
+.checkbox-text a,
+.checkbox-text a font {
+  color: #FF4D3D !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px !important;
+}
+input[type="checkbox"] { accent-color: #FF4D3D; width: 16px; height: 16px; }
+
+/* — Экран результата после отправки — */
+.form-result-block {
+  font-family: 'Manrope', sans-serif !important;
+  color: #14140F !important;
+}
