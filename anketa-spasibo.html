@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Заявка принята!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700;800&family=Manrope:wght@500;600;700&family=JetBrains+Mono:wght@600;700&display=swap">
+<link rel="stylesheet" href="styles.css" />
+<style>
+  html, body { margin: 0; background: var(--paper); -webkit-text-size-adjust: 100%; }
+  .wrap {
+    min-height: 100svh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 18px; text-align: center;
+    padding: 28px var(--gutter);
+  }
+  .badge {
+    width: 64px; height: 64px; border-radius: 999px;
+    background: var(--lime); color: var(--ink);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 1.9rem; font-weight: 800;
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(1.5rem, 5vw, 2rem); line-height: 1.1;
+    letter-spacing: var(--ls-display); color: var(--ink);
+  }
+  p {
+    margin: 0; max-width: 34ch;
+    font-family: var(--font-body); font-size: var(--fs-body);
+    line-height: 1.5; color: var(--ink-70); font-weight: 500;
+  }
+  .tg-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+    margin-top: 8px; padding: 20px 40px;
+    background: var(--coral); color: var(--on-accent);
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(1rem, 3vw, 1.2rem); line-height: 1;
+    border-radius: var(--r-pill); text-decoration: none;
+    box-shadow: 0 12px 30px -10px rgba(255,77,61,0.7);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .tg-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(255,77,61,0.85); color: var(--on-accent); text-decoration: none; }
+  .micro {
+    font-family: var(--font-mono); font-size: var(--fs-mono);
+    letter-spacing: var(--ls-mono); color: var(--ink-55);
+  }
+</style>
+</head>
+<body class="grain-fixed">
+<main class="wrap">
+  <span class="badge" aria-hidden="true">✓</span>
+  <h1>Заявка принята!</h1>
+  <p>Остался один шаг — переходи в Telegram, там всё дальнейшее по Большой Игре.</p>
+  <a id="tg-btn" class="tg-btn" href="https://t.me/kerryhelper" target="_top" rel="noopener">Открыть Telegram&nbsp;→</a>
+  <span class="micro">Если Telegram не открылся — нажми кнопку выше</span>
+</main>
+<script>
+(function () {
+  // Куда ведём после заявки. Можно переопределить query-параметром:
+  //   anketa-spasibo.html?tg=https://t.me/ваш_канал
+  var DEFAULT_TG = "https://t.me/kerryhelper";
+  var m = location.search.match(/[?&]tg=([^&]+)/);
+  var tg = m ? decodeURIComponent(m[1]) : DEFAULT_TG;
+  if (!/^https:\/\/(t\.me|telegram\.me)\//.test(tg)) tg = DEFAULT_TG; // только Telegram
+  document.getElementById("tg-btn").href = tg;
+
+  // Автопереход: выбрасываем в Telegram всё окно (а не наш маленький iframe).
+  // Если браузер запретит — остаётся кнопка (target="_top").
+  try {
+    if (window.top !== window) window.top.location.href = tg;
+    else location.replace(tg);
+  } catch (e) { /* остаёмся на кнопке */ }
+}());
+</script>
+</body>
+</html>
