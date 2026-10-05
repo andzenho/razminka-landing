@@ -8,7 +8,7 @@
 // Сайт переехал на /kerrycatt/. Сохраняем путь, параметры (utm) и якорь.
 (function () {
   var old = "/razminka-landing", p = location.pathname;
-  var rest = p.indexOf(old) === 0 ? p.slice(old.length) : "/";
+  var rest = p.indexOf(old) === 0 ? p.slice(old.length) : p;  // on a custom domain the path comes without the old repo name
   location.replace("https://andzenho.github.io/kerrycatt" + (rest || "/") + location.search + location.hash);
 })();
 </script>
